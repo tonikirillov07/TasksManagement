@@ -120,7 +120,7 @@ public class TaskService {
             throw new TooMuchInProgressTasksException(activeTasksCount, maxInProgressTasks, domainTask.assignedUserId());
 
         if(domainTask.isStarted())
-            throw new TaskIsAlreadyInProgress(id);
+            throw new TaskIsAlreadyInProgressException(id);
 
         tasksRepository.setTaskStatus(id, TaskStatus.IN_PROGRESS);
         log.info("Changed task status to {}. Task id: {}", TaskStatus.IN_PROGRESS, id);

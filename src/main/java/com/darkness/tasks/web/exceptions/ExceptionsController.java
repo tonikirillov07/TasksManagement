@@ -1,10 +1,7 @@
 package com.darkness.tasks.web.exceptions;
 
 import com.darkness.tasks.dto.ErrorMessageResponse;
-import com.darkness.tasks.exceptions.TaskAlreadyDoneException;
-import com.darkness.tasks.exceptions.TaskNotFoundException;
-import com.darkness.tasks.exceptions.TaskWrongDateException;
-import com.darkness.tasks.exceptions.TooMuchInProgressTasksException;
+import com.darkness.tasks.exceptions.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +37,8 @@ public class ExceptionsController {
             TooMuchInProgressTasksException.class,
             MethodArgumentNotValidException.class,
             TaskWrongDateException.class,
-            TaskAlreadyDoneException.class
+            TaskAlreadyDoneException.class,
+            TaskIsAlreadyInProgressException.class
     })
     public ResponseEntity<ErrorMessageResponse> handleBadRequestException(@NotNull Exception e) {
         log.error("Bad Request", e);
