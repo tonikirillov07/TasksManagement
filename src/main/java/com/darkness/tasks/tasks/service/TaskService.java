@@ -1,15 +1,12 @@
 package com.darkness.tasks.tasks.service;
 
 import com.darkness.tasks.TaskMapper;
+import com.darkness.tasks.exceptions.*;
 import com.darkness.tasks.tasks.TaskSearchFilter;
 import com.darkness.tasks.tasks.entity.TaskEntity;
-import com.darkness.tasks.exceptions.TaskAlreadyDoneException;
-import com.darkness.tasks.exceptions.TaskWrongDateException;
-import com.darkness.tasks.exceptions.TooMuchInProgressTasksException;
 import com.darkness.tasks.tasks.repositories.TasksRepository;
 import com.darkness.tasks.utils.TaskStatus;
 import com.darkness.tasks.tasks.entity.Task;
-import com.darkness.tasks.exceptions.TaskNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,6 +118,9 @@ public class TaskService {
         int activeTasksCount = tasksRepository.findAllByAssignedUserIdAndTaskStatus(domainTask.assignedUserId(), TaskStatus.IN_PROGRESS).size();
         if(activeTasksCount > maxInProgressTasks)
             throw new TooMuchInProgressTasksException(activeTasksCount, maxInProgressTasks, domainTask.assignedUserId());
+
+        if(domainTask.isStarted())
+            throw new TaskIsAlreadyInProgress(id);
 
         tasksRepository.setTaskStatus(id, TaskStatus.IN_PROGRESS);
         log.info("Changed task status to {}. Task id: {}", TaskStatus.IN_PROGRESS, id);

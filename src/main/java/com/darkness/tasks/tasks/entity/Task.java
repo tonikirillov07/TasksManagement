@@ -54,6 +54,10 @@ public record Task(@Null(message = "Task ID must be null")
         return taskStatus == TaskStatus.DONE;
     }
 
+    public boolean isStarted() {
+        return taskStatus == TaskStatus.IN_PROGRESS;
+    }
+
     public boolean isWrongDates(){
         return deadlineDate.isBefore(createDate);
     }
